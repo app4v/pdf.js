@@ -1324,10 +1324,14 @@ var PartialEvaluator = (function PartialEvaluatorClosure() {
           return textContentItem;
         }
         var font = textState.font;
-        if (!(font.loadedName in seenStyles)) {
+        if (!(font.loadedName in seenStyles)) { 
+          if(!font.fontFamily) {
+              font.fontFamily = font.name || font.fallbackName;
+              if(font.fontFamily && font.fontFamily.indexOf('+'))font.fontFamily = font.fontFamily.split('+')[1];
+          }
           seenStyles[font.loadedName] = true;
           textContent.styles[font.loadedName] = {
-            fontFamily: font.fallbackName,
+            fontFamily: font.fontFamily,
             ascent: font.ascent,
             descent: font.descent,
             vertical: font.vertical,
